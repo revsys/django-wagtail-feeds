@@ -37,6 +37,9 @@ try:
     is_date_field_datetime = feed_app_settings.is_feed_item_date_field_datetime
 except:  # pragma: no cover
     feed_app_settings = None
+    feed_app_label = None
+    feed_model_name = None
+    use_feed_image = False
     feed_item_date_field = None
     is_date_field_datetime = None
 
