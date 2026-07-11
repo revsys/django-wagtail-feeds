@@ -58,6 +58,12 @@ class CustomFeedGenerator(Rss201rev2Feed):
     def add_item_elements(self, handler, item):
         super().add_item_elements(handler, item)
         handler.startElement("content:encoded", {})
+        # Flush the pending start element so its closing ">" is written before
+        # we emit the raw CDATA below. Django's SimplerXMLGenerator defers the
+        # ">" (short_empty_elements=True) until the next characters()/endElement()
+        # call, and _write() bypasses that flush -- producing malformed
+        # "<content:encoded<![CDATA[" output otherwise.
+        handler._finish_pending_start_element()
 
         content = '<![CDATA['
         if use_feed_image and item['image'] != "":
