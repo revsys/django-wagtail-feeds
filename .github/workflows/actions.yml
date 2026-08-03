@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: true
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.12"
+          - "3.13"
+          - "3.14"
+          - "3.14t"
+          - "3.15"
+          - "3.15t"
+        django-version:
+          - "5.2"  # LTS
+          - "6.0"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          # 3.15 has no final release yet. Harmless for the others, and can be
+          # dropped once 3.15 ships.
+          allow-prereleases: true
+          cache: "pip"
+          cache-dependency-path: '**/pyproject.toml'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install uv
+
+      - name: Install Django ${{ matrix.django-version }}
+        run: |
+          python -m uv pip install --system "Django~=${{ matrix.django-version }}.0"
+
+      - name: Install dependencies
+        run: |
+          python -m uv pip install --system -e ".[test]"
+
+      - run: |
+          pytest .
+
+  # Django 6.1 removed django.utils.cache.cc_delim_re, which Django REST
+  # Framework (<=3.17.1) still imports. Wagtail depends on DRF for wagtail.api,
+  # so 6.1 fails on import before reaching our code — nothing we can fix here.
+  # This job is advisory: it goes green on its own once DRF ships a fix, which
+  # is the signal to promote 6.1 into the matrix above.
+  test-django-61:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      PYTHONDONTWRITEBYTECODE: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "pip"
+          cache-dependency-path: '**/pyproject.toml'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install uv
+
+      - name: Install Django 6.1
+        run: |
+          python -m uv pip install --system "Django>=6.1rc1,<6.2"
+
+      - name: Install dependencies
+        run: |
+          python -m uv pip install --system -e ".[test]"
+
+      - run: |
+          pytest .

@@ -4,20 +4,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wagtail_feeds', '0005_auto_20180130_1152'),
+        ("wagtail_feeds", "0005_auto_20180130_1152"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='rssfeedssettings',
-            name='feed_item_date_field',
-            field=models.CharField(blank=True, help_text='Date Field for feed item', max_length=255, verbose_name='Feed item date field'),
+            model_name="rssfeedssettings",
+            name="feed_item_date_field",
+            field=models.CharField(
+                blank=True, help_text="Date Field for feed item", max_length=255, verbose_name="Feed item date field"
+            ),
         ),
         migrations.AddField(
-            model_name='rssfeedssettings',
-            name='is_feed_item_date_field_datetime',
-            field=models.BooleanField(default=False, help_text='If the above date field is DateTime field, tick this.', verbose_name='Is Feed item date field Datetime Field'),
+            model_name="rssfeedssettings",
+            name="is_feed_item_date_field_datetime",
+            field=models.BooleanField(
+                default=False,
+                help_text="If the above date field is DateTime field, tick this.",
+                verbose_name="Is Feed item date field Datetime Field",
+            ),
         ),
     ]

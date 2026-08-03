@@ -10,10 +10,10 @@ Support RSS Feeds, Facebook Instant Articles and Apple News
 
 Syndication feeds come in two flavors:
 
- - **BasicFeed** -  A standard `RSS V 2.0.1`_ feed designed to be used without 
+ - **BasicFeed** -  A standard `RSS V 2.0.1`_ feed designed to be used without
    item enclosures.
 
- - **ExtendedFeed** - An RSS V2/Atom Feed with support for item  
+ - **ExtendedFeed** - An RSS V2/Atom Feed with support for item
    enclosures such as images or video. Use this if when want to integrate your
    feed with services like MailChimp or Flipboard.
 
@@ -28,7 +28,7 @@ Syndication feeds come in two flavors:
    :caption: Getting Started
 
    installation
-   usage 
+   usage
 
 .. _contributing:
 
