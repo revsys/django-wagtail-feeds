@@ -19,8 +19,6 @@ jobs:
           - "3.13"
           - "3.14"
           - "3.14t"
-          - "3.15"
-          - "3.15t"
         django-version:
           - "5.2"  # LTS
           - "6.0"
@@ -32,9 +30,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          # 3.15 has no final release yet. Harmless for the others, and can be
-          # dropped once 3.15 ships.
-          allow-prereleases: true
           cache: "pip"
           cache-dependency-path: '**/pyproject.toml'
 
@@ -53,11 +48,18 @@ jobs:
       - run: |
           pytest .
 
-  # Django 6.1 removed django.utils.cache.cc_delim_re, which Django REST
-  # Framework (<=3.17.1) still imports. Wagtail depends on DRF for wagtail.api,
-  # so 6.1 fails on import before reaching our code — nothing we can fix here.
-  # This job is advisory: it goes green on its own once DRF ships a fix, which
-  # is the signal to promote 6.1 into the matrix above.
+  # Django 6.1 readiness, advisory only (continue-on-error).
+  #
+  # Django 6.1 removed django.utils.cache.cc_delim_re, which every released
+  # Django REST Framework (<=3.17.1) still imports. Wagtail depends on DRF for
+  # wagtail.api, so 6.1 fails at import against a released DRF — nothing we can
+  # fix here. DRF merged the fix in encode/django-rest-framework#9978 but has
+  # not cut a release, so this job installs DRF from main to exercise our own
+  # 6.1 compatibility rather than sitting red on someone else's release
+  # schedule.
+  #
+  # When DRF ships a fixed release: drop the git install below, delete the 6.1
+  # skip in noxfile.py, and promote 6.1 into the matrix above.
   test-django-61:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -85,6 +87,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m uv pip install --system -e ".[test]"
+
+      - name: Install Django REST Framework from main (unreleased 6.1 fix)
+        run: |
+          python -m uv pip install --system \
+            "djangorestframework @ git+https://github.com/encode/django-rest-framework@main"
 
       - run: |
           pytest .

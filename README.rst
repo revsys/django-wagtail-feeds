@@ -11,15 +11,16 @@ own projects. Changes stay in this fork; it is not published to PyPI.
 Support
 -------
 
-- Python 3.12, 3.13, 3.14, and 3.15, including the free-threaded builds (3.14t
-  and 3.15t). Python 3.15 is still in beta, so it is tested but not promised.
+- Python 3.12, 3.13, and 3.14, including the free-threaded build (3.14t).
 - Django 5.2 LTS and 6.0.
 - Wagtail 7.
 
 Django 6.1 is not supported yet. It removed ``django.utils.cache.cc_delim_re``,
 which Django REST Framework (<= 3.17.1) still imports, and Wagtail depends on
 DRF for ``wagtail.api`` — so 6.1 fails at import before reaching this package.
-CI runs an advisory Django 6.1 job that will go green once DRF ships a fix.
+CI runs an advisory Django 6.1 job against DRF ``main``, which already carries the
+fix (encode/django-rest-framework#9978); 6.1 moves into the matrix once DRF cuts
+a release.
 
 Support RSS Feeds, JSON Feed, Facebook Instant Articles and Apple News. Syndication feeds come in two flavors:
 

@@ -1,7 +1,7 @@
 import nox
 
 DJANGO_VERSIONS = ["5.2", "6.0", "6.1"]
-PYTHON_VERSIONS = ["3.12", "3.13", "3.14", "3.14t", "3.15", "3.15t"]
+PYTHON_VERSIONS = ["3.12", "3.13", "3.14", "3.14t"]
 
 # Django versions that have no final release yet need a specifier that opts in
 # to pre-releases. Naming the pre-release also lets the same spec pick up the

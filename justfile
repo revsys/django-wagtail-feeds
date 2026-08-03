@@ -44,4 +44,4 @@
 
 # Run tests with latest Python and Django versions
 @test-latest *ARGS="--no-install --reuse-existing-virtualenvs":
-    uv tool run nox {{ ARGS }} --session "tests-3.15(django='6.0')"
+    uv tool run nox {{ ARGS }} --session "tests-3.14(django='6.0')"
