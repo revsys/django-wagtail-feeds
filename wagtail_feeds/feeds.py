@@ -1,27 +1,14 @@
 import json
-from collections import OrderedDict
-
-from django.contrib.syndication.views import Feed
-from django.utils.feedgenerator import Rss201rev2Feed, SyndicationFeed, rfc3339_date
-from wagtail import VERSION as WAGTAIL_VERSION
-
-if WAGTAIL_VERSION >= (2, 0):
-    from wagtail.models import Site
-    from wagtail.rich_text import expand_db_html
-else:
-    from wagtail.wagtailcore.models import Site
-    from wagtail.wagtailcore.rich_text import expand_db_html
-
 from datetime import datetime, time
+from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 from django.apps import apps
+from django.contrib.syndication.views import Feed
+from django.utils.feedgenerator import Rss201rev2Feed, SyndicationFeed, rfc3339_date
 from django.utils.html import strip_tags
-
-try:
-    from urlparse import urljoin
-except ImportError:  # pragma: no cover
-    from urllib.parse import urljoin
+from wagtail.models import Site
+from wagtail.rich_text import expand_db_html
 
 from .models import RSSFeedsSettings
 
@@ -81,7 +68,7 @@ class JSONFeed(SyndicationFeed):
     content_type = "application/json; charset=utf-8"
 
     def write(self, outfile, encoding):
-        data = OrderedDict()
+        data = {}
         data["version"] = "https://jsonfeed.org/version/1"
         data.update(self.add_root_elements())
 
@@ -98,7 +85,7 @@ class JSONFeed(SyndicationFeed):
         outfile.write(json.dumps(data))
 
     def add_item_elements(self, item):
-        item_elements = OrderedDict()
+        item_elements = {}
 
         item_elements["id"] = item["link"]
         item_elements["url"] = item["link"]
@@ -119,7 +106,7 @@ class JSONFeed(SyndicationFeed):
         return item_elements
 
     def add_root_elements(self):
-        root_elements = OrderedDict()
+        root_elements = {}
 
         root_elements["title"] = self.feed["title"]
         root_elements["description"] = self.feed["description"]
