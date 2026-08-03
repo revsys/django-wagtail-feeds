@@ -33,6 +33,7 @@ classifiers = [
     "Programming Language :: Python :: Free Threading :: 3 - Stable",
 ]
 dependencies = [
+    "beautifulsoup4",
     "Django>=5.2",
     "Wagtail>=7.0",
 ]
