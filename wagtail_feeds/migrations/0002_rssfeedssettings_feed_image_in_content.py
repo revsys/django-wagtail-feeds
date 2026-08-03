@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('wagtail_feeds', '0001_initial'),
+        ("wagtail_feeds", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='rssfeedssettings',
-            name='feed_image_in_content',
-            field=models.BooleanField(default=True, help_text=b'Add feed image to content encoded field'),
+            model_name="rssfeedssettings",
+            name="feed_image_in_content",
+            field=models.BooleanField(default=True, help_text=b"Add feed image to content encoded field"),
         ),
     ]

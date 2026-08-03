@@ -64,3 +64,6 @@ target/
 
 # our files
 original_images/
+
+# uv
+uv.lock

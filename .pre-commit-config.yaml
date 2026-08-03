@@ -1,56 +1,29 @@
 default_language_version:
-  python: python3.10
+  python: python3.13
 
-exclude: |
-    (?x)^(
-        .devcontainer/devcontainer.json|
-        .vscode/launch.json|
-        static/.*
-    )$
+# Vendored upstream copy of sphinx_rtd_theme — not ours to reformat.
+exclude: ^docs/_themes/
 
 repos:
-  # - repo: https://github.com/pre-commit/pre-commit-hooks
-  #   rev: v4.5.0
-  #   hooks:
-  #     - id: check-added-large-files
-  #     - id: check-case-conflict
-  #     - id: check-json
-  #     - id: check-merge-conflict
-  #     - id: check-symlinks
-  #     - id: check-toml
-  #     - id: end-of-file-fixer
-  #     - id: trailing-whitespace
-  # - repo: https://github.com/rtts/djhtml
-  #   rev: '3.0.6'
-  #   hooks:
-  #     - id: djhtml
-  #       entry: djhtml --tabwidth 4
-  #       alias: autoformat
-  #     # - id: djcss
-  #     #   alias: autoformat
-  #     # - id: djjs
-  #     #   alias: autoformat
-
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.1
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
     hooks:
-      - id: pyupgrade
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+        alias: autoformat
+      - id: trailing-whitespace
+        alias: autoformat
 
-  - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.16.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.1
     hooks:
-      - id: django-upgrade
-        args: [--target-version, "5.0"]
-
-  # - repo: https://github.com/asottile/blacken-docs
-  #   rev: 1.16.0
-  #   hooks:
-  #     - id: blacken-docs
-  #       alias: autoformat
-  # - repo: https://github.com/charliermarsh/ruff-pre-commit
-  #   rev: 'v0.3.2'
-  #   hooks:
-  #   hooks:
-  #     - id: ruff
-  #       args: [--fix, --exit-non-zero-on-fix]
-  #     - id: ruff-format
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+        alias: autoformat

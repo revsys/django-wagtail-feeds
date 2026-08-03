@@ -1,0 +1,113 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-wagtail-feeds"
+version = "0.1.0"
+description = "Support RSS Feeds, Facebook Instant Articles and Apple News"
+authors = [
+    { name = "Christopher Clarke", email = "cclarke@chrisdev.com" },
+]
+maintainers = [
+    { name = "Jeff Triplett", email = "jeff@revsys.com" },
+]
+license = "MIT"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Framework :: Wagtail",
+    "Framework :: Wagtail :: 7",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Free Threading :: 3 - Stable",
+]
+dependencies = [
+    "Django>=5.2",
+    "Wagtail>=7.0",
+]
+requires-python = ">=3.12"
+
+[project.readme]
+file = "README.rst"
+content-type = "text/x-rst"
+
+[project.urls]
+Homepage = "https://github.com/revsys/django-wagtail-feeds/"
+Upstream = "https://github.com/chrisdev/django-wagtail-feeds/"
+
+[project.optional-dependencies]
+lint = ["prek"]
+test = ["pytest", "pytest-cov", "pytest-django"]
+testing = ["django-wagtail-feeds[test]"]
+
+[tool.bumpver]
+current_version = "0.1.0"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "Bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = ['current_version = "{version}"', 'version = "{version}"']
+"wagtail_feeds/__init__.py" = ["__version__ = '{version}'"]
+
+[tool.coverage.paths]
+source = ["wagtail_feeds"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "if DEBUG:",
+    "if not DEBUG:",
+    "if settings.DEBUG:",
+    "if TYPE_CHECKING:",
+    'def __str__\(self\)\s?\-?\>?\s?\w*\:',
+]
+
+[tool.coverage.run]
+omit = [
+    "docs/*",
+    "tests/*",
+    "wagtail_feeds/migrations/*",
+]
+source = ["wagtail_feeds"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["wagtail_feeds"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/wagtail_feeds",
+    "/AUTHORS.rst",
+    "/HISTORY.rst",
+    "/LICENSE",
+    "/README.rst",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint.per-file-ignores]
+# Django declares these as plain class attributes by convention; ClassVar
+# annotations would be wrong here (migrations are generated code).
+"**/migrations/*.py" = ["RUF012"]
+"**/models.py" = ["RUF012"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.test_settings"
+norecursedirs = ".* build dist docs .eggs/* *.egg-info htmlcov .git .tox .nox"
+python_files = "test_*.py *_tests.py"
+pythonpath = ["."]
+testpaths = ["tests"]

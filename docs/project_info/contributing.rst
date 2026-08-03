@@ -103,4 +103,3 @@ Tips
 To run a subset of tests::
 
 $ py.test tests.test_wagtail_feeds
-
